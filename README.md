@@ -1,3 +1,5 @@
+Screencast covering process of building custom portal: https://drive.google.com/open?id=0BxZq5VCxj3LWckZ4bXIxM1FvWEE
+
 ## Building blocks
 
 Before starting working on custom developer portal, let's learn basic building blocks.
