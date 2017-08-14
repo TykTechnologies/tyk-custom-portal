@@ -24,8 +24,6 @@ Tyk = Excon.new(dashboardURL, :persistent => true, :headers => { "authorization"
 
 ### ==== Configure global variables and auth logic
 before do
-    # session[:developer] = "leonsbox@gmail.com"
-
     if session[:developer]
         resp = Tyk.get(path: "/api/portal/developers/email/#{session[:developer]}")
 
@@ -37,6 +35,7 @@ before do
     end
 
     @apis_catalogue = JSON.parse(Tyk.get(path: "/api/portal/catalogue").body)
+    @portal_config = JSON.parse(Tyk.get(path: "/api/portal/configuration").body)
 end
 
 set(:auth) do |*roles|   # <- notice the splat here
@@ -112,14 +111,15 @@ end
 ### ==== Dashboard and home page ====
 get '/' do
     if @developer
-        redirect to("/dashboard")
+        redirect "/dashboard"
+        return
     end
 
     erb :home
 end
 
 get '/dashboard', auth: :logged do
-    keys = @developer['subscriptions'].values.join(',')
+    keys = @developer['subscriptions'].values.join(',') + ','
     from = (Date.today - 30).strftime("%d/%m/%Y")
     to = Date.today.strftime("%d/%m/%Y")
 
@@ -140,9 +140,9 @@ end
 template :request_access do
     <<-HTML
     <h1>Requesting access to '<%=@api['name']%>' API</h1>
-    <form target="/request/<%=params[:policy_id]%>" method="POST">
-        <input class="input" placeholder="Use case" name="usecase" /><br/>
-        <input class="input"  placeholder="Planned amount of monthly requests" name="traffic" /><br/>
+    <form target="/request/<%=params[:policy_id]%>" method="POST" class="column is-half">
+        <input class="input" placeholder="Use case" name="usecase" /><br/><br/>
+        <input class="input"  placeholder="Planned amount of monthly requests" name="traffic" /><br/><br/>
         <input class="button is-primary" type="submit" />
     </form>
     HTML
@@ -163,6 +163,7 @@ post '/request/:policy_id', :auth => :logged do
             "usecase" => params[:usecase],
             "traffic" => params[:traffic],
         },
+        'date_created' => Time.now.iso8601,
         "version" => "v2",
         "for_plan" => params[:policy_id]
     }
@@ -173,7 +174,13 @@ post '/request/:policy_id', :auth => :logged do
         return erb :request_access
     end
 
-    redirect to("/")
+    unless @portal_config['require_key_approval']
+        puts resp.body
+        reqID = JSON.parse(resp.body)["Message"]
+        Tyk.put(path: "/api/portal/requests/approve/#{reqID}")
+    end
+
+    redirect "/"
 end
 
 ### ==== User registration ====
@@ -211,7 +218,7 @@ post '/register' do
         erb :register
     else
         session[:developer] = params[:email]
-        redirect to("/")
+        redirect "/"
     end
 end
 
@@ -232,24 +239,17 @@ get '/login' do
 end
 
 post '/login' do
-    resp = Tyk.get(path: "/api/portal/developers/email/#{params[:email]}")
-    if resp.status != 200
-        @error = resp.body
-        return erb :login
-    end
-
-    developer = JSON.parse(resp.body)
-
-    if false # We are working on API endpoint to check user credentials
+    resp = Tyk.post(path: "/api/portal/developers/verify_credentials", body: { username: params[:email], password: params[:password] }.to_json)
+    if false
         @error = "Password not match"
         return erb :login
     end
 
-    session[:developer] = developer['email']
-    redirect to("/")
+    session[:developer] = params[:email]
+    redirect "/"
 end
 
 get '/logout' do
     session.delete(:developer)
-    redirect to("/")
+    redirect "/"
 end

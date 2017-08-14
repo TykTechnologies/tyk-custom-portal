@@ -88,7 +88,18 @@ Note that all non-empty custom fields are shown in Tyk Dashboard Developer view.
 
 If you need to implement own login workflow, you need be able to validate user password.
 
-NOTE: This is currently in the works
+```
+curl https://admin.cloudv2.tyk.io/api/portal/developers/verify_credentials \
+    -X POST \
+    -H "authorization: $TYK_API_KEY" \
+    -d \
+    '{
+        "username": "<developer-email>",
+        "password": "<developer-password>"
+    }'
+```
+
+If credentials verified response HTTP code will be 200, ortherwise credentials do match.
 
 ### Listing available APIs
 Inside admin dashboard, in the portal menu, you define catalogues with the list of APIs available to developers. Each defined API is identified by its policy id field.
