@@ -1,3 +1,6 @@
+## Why?
+Tyk Dashboard by default include nice developer portal functionality, but in some cases it is require to have custom logic or, for example, embed portal into existing platform. Thankfully Tyk is flexible enough to provide an easy way of integrating portal to any platform and language using a few API calls.
+
 Screencast covering process of building custom portal: https://drive.google.com/open?id=0BxZq5VCxj3LWckZ4bXIxM1FvWEE
 
 ## Building blocks
@@ -208,3 +211,13 @@ First, you need to install dependencies by running `gem install sinatra excon --
 After, run it like this: `TYK_PORTAL_PORT=8080 TYK_API_KEY=<your-api-key-here> ruby portal.rb`
 
 You can also specify `TYK_DASHBOARD_URL` if you are trying this portal against On-premise version. By default, it configured to work with Cloud or Hybrid.
+
+See the video showing process of building portal described above https://drive.google.com/open?id=0BxZq5VCxj3LWckZ4bXIxM1FvWEE
+
+## License
+
+Tyk is released under the MPL v2.0; please see [LICENSE.md](LICENSE.md) for a full version of the license.
+
+## Contributing
+
+For more information about contributing PRs and issues, see [CONTRIBUTING.md](https://github.com/TykTechnologies/tyk/blob/master/CONTRIBUTING.md).
