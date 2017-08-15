@@ -25,7 +25,7 @@ export TYK_API_KEY=1efdefd6c93046bc4102f7bf77f17f4e
 ### Creating a developer
 
 ```
-curl https://admin.cloudv2.tyk.io/api/portal/developers \
+curl https://admin.cloud.tyk.io/api/portal/developers \
     -X POST \
     -H "authorization: $TYK_API_KEY" \
     -d \
@@ -45,7 +45,7 @@ Where `Message` contains developer internal ID., You do not have to remember it,
 ### Developer by Email
 
 ```
-curl https://admin.cloudv2.tyk.io/api/portal/developers/email/apidev%40example.com \
+curl https://admin.cloud.tyk.io/api/portal/developers/email/apidev%40example.com \
     -X GET \
     -H "authorization: $TYK_API_KEY"
 
@@ -66,7 +66,7 @@ Let's say we want to add new custom "field" to the developer, to store some inte
 Lets created updated developer record, based example response provided in `Developer by Email` section. Let's add new "traffic_source" custom field.
 
 ```
-curl https://admin.cloudv2.tyk.io/api/portal/developers/598d4a33ac42130001c1257c \
+curl https://admin.cloud.tyk.io/api/portal/developers/598d4a33ac42130001c1257c \
     -X PUT \
     -H "authorization: $TYK_API_KEY" \
     -d \
@@ -94,7 +94,7 @@ Note that all non-empty custom fields are shown in Tyk Dashboard Developer view.
 If you need to implement own login workflow, you need be able to validate user password.
 
 ```
-curl https://admin.cloudv2.tyk.io/api/portal/developers/verify_credentials \
+curl https://admin.cloud.tyk.io/api/portal/developers/verify_credentials \
     -X POST \
     -H "authorization: $TYK_API_KEY" \
     -d \
@@ -110,7 +110,7 @@ If credentials verified response HTTP code will be 200, ortherwise credentials d
 Inside admin dashboard, in the portal menu, you define catalogues with the list of APIs available to developers. Each defined API is identified by its policy id field.
 
 ```
-curl https://admin.cloudv2.tyk.io/api/portal/catalogue \
+curl https://admin.cloud.tyk.io/api/portal/catalogue \
     -X GET \
     -H "authorization: $TYK_API_KEY"
 
@@ -149,7 +149,7 @@ By default, all keys requests are approved automatically, and the user immediate
 Once key is issued, the user receives email with Key details.
 
 ```
-curl https://admin.cloudv2.tyk.io/api/portal/requests \
+curl https://admin.cloud.tyk.io/api/portal/requests \
     -X PUT \
     -H "authorization: $TYK_API_KEY" \
     -d \
@@ -183,7 +183,7 @@ API Endpoint: `/api/activity/keys/aggregate/#{keys}/#{from}/#{to}?p=-1&res=day`
 * `api_id` - policy id associated with developer portal API. If ommited return stats for all APIs.
 
 ```
-curl "https://admin.cloudv2.tyk.io/api/activity/keys/aggregate/add2b342,5f1d9603,/5/8/2017/13/8/2017?api_id=8e4d983609c044984ecbb286b8d25cd9&api_version=Non+Versioned&p=-1&res=day" \
+curl "https://admin.cloud.tyk.io/api/activity/keys/aggregate/add2b342,5f1d9603,/5/8/2017/13/8/2017?api_id=8e4d983609c044984ecbb286b8d25cd9&api_version=Non+Versioned&p=-1&res=day" \
     -X GET \
     -H "authorization: $TYK_API_KEY"
 
