@@ -18,7 +18,7 @@ if ENV['TYK_API_KEY'] == ""
     exit(1)
 end
 
-dashboardURL = ENV['TYK_DASHBOARD_URL'] || 'https://admin.cloudv2.tyk.io/'
+dashboardURL = ENV['TYK_DASHBOARD_URL'] || 'https://admin.cloud.tyk.io/'
 
 Tyk = Excon.new(dashboardURL, :persistent => true, :headers => { "authorization": ENV['TYK_API_KEY']})
 
