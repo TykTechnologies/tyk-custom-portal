@@ -3,4 +3,4 @@ Tyk Dashboard by default include nice developer portal functionality, but in som
 
 Screencast covering process of building custom portal: https://drive.google.com/open?id=0BxZq5VCxj3LWckZ4bXIxM1FvWEE
 
-See the full documentation by following this link https://tyk.io/docs/publish/customise/custom-developer-portal/
+See the full documentation by following this link https://tyk.io/docs/tyk-developer-portal/customise/custom-developer-portal/
